@@ -15,7 +15,7 @@ You will only need to run this command when dependencies change in [package.json
 
 We use npm scripts and [Webpack][] as our build system.
 
-
+Dev : Create and start these dockers images : Jhipster registry, Postgres, kafka, zookeeper and elasticSearch
 Run the following commands in two separate terminals to create a blissful development experience where your browser
 auto-refreshes when files change on your hard drive.
 

@@ -62,5 +62,5 @@
             "spec": false
         }
     },
-    "packageManager": "yarn"
+    "packageManager": "npm"
 }

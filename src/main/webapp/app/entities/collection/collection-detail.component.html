@@ -1,0 +1,39 @@
+
+<div *ngIf="collection">
+    <h2><span jhiTranslate="libBooksApp.collection.detail.title">Collection</span> {{collection.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="libBooksApp.collection.name">Name</span></dt>
+        <dd>
+            <span>{{collection.name}}</span>
+        </dd>
+        <dt><span jhiTranslate="libBooksApp.collection.image">Image</span></dt>
+        <dd>
+            <div *ngIf="collection.image">
+                <a (click)="openFile(collection.imageContentType, collection.image)">
+                    <img [src]="'data:' + collection.imageContentType + ';base64,' + collection.image" style="max-width: 100%;" alt="collection image"/>
+                </a>
+                {{collection.imageContentType}}, {{byteSize(collection.image)}}
+            </div>
+        </dd>
+        <dt><span jhiTranslate="libBooksApp.collection.booksNumber">Books Number</span></dt>
+        <dd>
+            <span>{{collection.booksNumber}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'collection/'+ collection.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>
