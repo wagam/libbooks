@@ -25,14 +25,14 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="image" type="longblob">
+            <column name="cover" type="longblob">
                 <constraints nullable="true" />
             </column>
-            <column name="image_content_type" type="varchar(255)">
+            <column name="cover_content_type" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
 
-            <column name="books_number" type="integer">
+            <column name="book_number" type="integer">
                 <constraints nullable="true" />
             </column>
 

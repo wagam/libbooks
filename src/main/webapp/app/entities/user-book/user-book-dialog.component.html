@@ -1,0 +1,57 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myUserBookLabel" jhiTranslate="libBooksApp.userBook.home.createOrEditLabel">Create or edit a User Book</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!userBook.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="userBook.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="libBooksApp.userBook.status" for="field_status">Status</label>
+            <select class="form-control" name="status" [(ngModel)]="userBook.status" id="field_status" >
+                <option value="IS_READ">{{'libBooksApp.BookStatus.IS_READ' | translate}}</option>
+                <option value="WAIT_FOR_READ">{{'libBooksApp.BookStatus.WAIT_FOR_READ' | translate}}</option>
+                <option value="IS_IN_PROGRESS">{{'libBooksApp.BookStatus.IS_IN_PROGRESS' | translate}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="libBooksApp.userBook.comment" for="field_comment">Comment</label>
+            <input type="text" class="form-control" name="comment" id="field_comment"
+                [(ngModel)]="userBook.comment" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="libBooksApp.userBook.isLiked" for="field_isLiked">Is Liked</label>
+            <input type="checkbox" class="form-control" name="isLiked" id="field_isLiked"
+                [(ngModel)]="userBook.isLiked" />
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="libBooksApp.userBook.user" for="field_user">User</label>
+            <select class="form-control" id="field_user" name="user" [(ngModel)]="userBook.userId" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="userOption.id" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.id}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="libBooksApp.userBook.books" for="field_books">Books</label>
+            <select class="form-control" id="field_books" name="books" [(ngModel)]="userBook.booksId" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="bookOption.id" *ngFor="let bookOption of books; trackBy: trackBookById">{{bookOption.id}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

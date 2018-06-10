@@ -12,6 +12,8 @@ import org.mapstruct.*;
 public interface CollectionMapper extends EntityMapper<CollectionDTO, Collection> {
 
 
+    @Mapping(target = "books", ignore = true)
+    Collection toEntity(CollectionDTO collectionDTO);
 
     default Collection fromId(Long id) {
         if (id == null) {

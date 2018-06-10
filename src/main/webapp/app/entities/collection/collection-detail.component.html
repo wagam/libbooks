@@ -8,18 +8,18 @@
         <dd>
             <span>{{collection.name}}</span>
         </dd>
-        <dt><span jhiTranslate="libBooksApp.collection.image">Image</span></dt>
+        <dt><span jhiTranslate="libBooksApp.collection.cover">Cover</span></dt>
         <dd>
-            <div *ngIf="collection.image">
-                <a (click)="openFile(collection.imageContentType, collection.image)">
-                    <img [src]="'data:' + collection.imageContentType + ';base64,' + collection.image" style="max-width: 100%;" alt="collection image"/>
+            <div *ngIf="collection.cover">
+                <a (click)="openFile(collection.coverContentType, collection.cover)">
+                    <img [src]="'data:' + collection.coverContentType + ';base64,' + collection.cover" style="max-width: 100%;" alt="collection image"/>
                 </a>
-                {{collection.imageContentType}}, {{byteSize(collection.image)}}
+                {{collection.coverContentType}}, {{byteSize(collection.cover)}}
             </div>
         </dd>
-        <dt><span jhiTranslate="libBooksApp.collection.booksNumber">Books Number</span></dt>
+        <dt><span jhiTranslate="libBooksApp.collection.bookNumber">Book Number</span></dt>
         <dd>
-            <span>{{collection.booksNumber}}</span>
+            <span>{{collection.bookNumber}}</span>
         </dd>
     </dl>
 

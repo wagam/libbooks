@@ -9,6 +9,11 @@
                 "main": "Entités",
                 "books": "Books",
                 "collection": "Collection",
+                "book": "Book",
+                "author": "Author",
+                "userBook": "User Book",
+                "userMetadatas": "User Metadatas",
+                "bookMetadatas": "Book Metadatas",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

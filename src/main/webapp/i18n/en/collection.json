@@ -18,8 +18,9 @@
                 "title": "Collection"
             },
             "name": "Name",
-            "image": "Image",
-            "booksNumber": "Books Number"
+            "cover": "Cover",
+            "bookNumber": "Book Number",
+            "book": "Book"
         }
     }
 }

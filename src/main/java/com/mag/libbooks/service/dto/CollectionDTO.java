@@ -2,6 +2,8 @@ package com.mag.libbooks.service.dto;
 
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 import javax.persistence.Lob;
 
@@ -15,10 +17,10 @@ public class CollectionDTO implements Serializable {
     private String name;
 
     @Lob
-    private byte[] image;
-    private String imageContentType;
+    private byte[] cover;
+    private String coverContentType;
 
-    private Integer booksNumber;
+    private Integer bookNumber;
 
     public Long getId() {
         return id;
@@ -36,28 +38,28 @@ public class CollectionDTO implements Serializable {
         this.name = name;
     }
 
-    public byte[] getImage() {
-        return image;
+    public byte[] getCover() {
+        return cover;
     }
 
-    public void setImage(byte[] image) {
-        this.image = image;
+    public void setCover(byte[] cover) {
+        this.cover = cover;
     }
 
-    public String getImageContentType() {
-        return imageContentType;
+    public String getCoverContentType() {
+        return coverContentType;
     }
 
-    public void setImageContentType(String imageContentType) {
-        this.imageContentType = imageContentType;
+    public void setCoverContentType(String coverContentType) {
+        this.coverContentType = coverContentType;
     }
 
-    public Integer getBooksNumber() {
-        return booksNumber;
+    public Integer getBookNumber() {
+        return bookNumber;
     }
 
-    public void setBooksNumber(Integer booksNumber) {
-        this.booksNumber = booksNumber;
+    public void setBookNumber(Integer bookNumber) {
+        this.bookNumber = bookNumber;
     }
 
     @Override
@@ -86,8 +88,8 @@ public class CollectionDTO implements Serializable {
         return "CollectionDTO{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
-            ", image='" + getImage() + "'" +
-            ", booksNumber=" + getBooksNumber() +
+            ", cover='" + getCover() + "'" +
+            ", bookNumber=" + getBookNumber() +
             "}";
     }
 }

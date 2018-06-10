@@ -1,25 +1,32 @@
 {
     "fluentMethods": true,
-    "relationships": [],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "book",
+            "otherEntityName": "book",
+            "otherEntityRelationshipName": "collection"
+        }
+    ],
     "fields": [
         {
             "fieldName": "name",
             "fieldType": "String"
         },
         {
-            "fieldName": "image",
+            "fieldName": "cover",
             "fieldType": "byte[]",
             "fieldTypeBlobContent": "image"
         },
         {
-            "fieldName": "booksNumber",
+            "fieldName": "bookNumber",
             "fieldType": "Integer"
         }
     ],
     "changelogDate": "20180610103246",
-    "dto": "mapstruct",
-    "service": "serviceImpl",
     "entityTableName": "collection",
-    "jpaMetamodelFiltering": false,
-    "pagination": "pagination"
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false
 }

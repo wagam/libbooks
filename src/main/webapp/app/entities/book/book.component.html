@@ -1,0 +1,112 @@
+<div>
+    <h2>
+        <span jhiTranslate="libBooksApp.book.home.title">Books</span>
+        <button class="btn btn-primary float-right jh-create-entity create-book" [routerLink]="['/', { outlets: { popup: ['book-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span class="hidden-sm-down"  jhiTranslate="libBooksApp.book.home.createLabel">
+            Create new Book
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+        <div class="col-sm-12">
+            <form name="searchForm" class="form-inline">
+                <div class="input-group w-100 mt-3">
+                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'libBooksApp.book.home.search' | translate }}">
+                    <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
+                        <span class="fa fa-search"></span>
+                    </button>
+                    <button class="input-group-append btn btn-danger" (click)="clear()" *ngIf="currentSearch">
+                        <span class="fa fa-trash-o"></span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="books">
+        <table class="table table-striped">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
+            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="title"><span jhiTranslate="libBooksApp.book.title">Title</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="firstYearEdition"><span jhiTranslate="libBooksApp.book.firstYearEdition">First Year Edition</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="hasNext"><span jhiTranslate="libBooksApp.book.hasNext">Has Next</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="summary"><span jhiTranslate="libBooksApp.book.summary">Summary</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="cover"><span jhiTranslate="libBooksApp.book.cover">Cover</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="numberOfPages"><span jhiTranslate="libBooksApp.book.numberOfPages">Number Of Pages</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="metadatasId"><span jhiTranslate="libBooksApp.book.metadatas">Metadatas</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="collectionId"><span jhiTranslate="libBooksApp.book.collection">Collection</span> <span class="fa fa-sort"></span></th>
+            <th jhiSortBy="authorId"><span jhiTranslate="libBooksApp.book.author">Author</span> <span class="fa fa-sort"></span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let book of books ;trackBy: trackId">
+                <td><a [routerLink]="['../book', book.id ]">{{book.id}}</a></td>
+                <td>{{book.title}}</td>
+                <td>{{book.firstYearEdition}}</td>
+                <td>{{book.hasNext}}</td>
+                <td>{{book.summary}}</td>
+                <td>
+                    <a *ngIf="book.cover" (click)="openFile(book.coverContentType, book.cover)">
+                        <img [src]="'data:' + book.coverContentType + ';base64,' + book.cover" style="max-height: 30px;" alt="book image"/>
+                    </a>
+                    <span *ngIf="book.cover">{{book.coverContentType}}, {{byteSize(book.cover)}}</span>
+                </td>
+                <td>{{book.numberOfPages}}</td>
+                <td>
+                    <div *ngIf="book.metadatasId">
+                        <a [routerLink]="['../book-metadatas', book.metadatasId  ]" >{{book.metadatasId}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="book.collectionId">
+                        <a [routerLink]="['../collection', book.collectionId  ]" >{{book.collectionId}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="book.authorId">
+                        <a [routerLink]="['../author', book.authorId  ]" >{{book.authorId}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../book', book.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'book/'+ book.id + '/edit'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'book/'+ book.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div *ngIf="books && books.length">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="queryCount" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
+        </div>
+    </div>
+</div>

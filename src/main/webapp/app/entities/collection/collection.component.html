@@ -28,11 +28,11 @@
     <div class="table-responsive" *ngIf="collections">
         <table class="table table-striped">
             <thead>
-            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="transition.bind(this)">
-            <th jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="name"><span jhiTranslate="libBooksApp.collection.name">Name</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="image"><span jhiTranslate="libBooksApp.collection.image">Image</span> <span class="fa fa-sort"></span></th>
-            <th jhiSortBy="booksNumber"><span jhiTranslate="libBooksApp.collection.booksNumber">Books Number</span> <span class="fa fa-sort"></span></th>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="libBooksApp.collection.name">Name</span></th>
+            <th><span jhiTranslate="libBooksApp.collection.cover">Cover</span></th>
+            <th><span jhiTranslate="libBooksApp.collection.bookNumber">Book Number</span></th>
             <th></th>
             </tr>
             </thead>
@@ -41,12 +41,12 @@
                 <td><a [routerLink]="['../collection', collection.id ]">{{collection.id}}</a></td>
                 <td>{{collection.name}}</td>
                 <td>
-                    <a *ngIf="collection.image" (click)="openFile(collection.imageContentType, collection.image)">
-                        <img [src]="'data:' + collection.imageContentType + ';base64,' + collection.image" style="max-height: 30px;" alt="collection image"/>
+                    <a *ngIf="collection.cover" (click)="openFile(collection.coverContentType, collection.cover)">
+                        <img [src]="'data:' + collection.coverContentType + ';base64,' + collection.cover" style="max-height: 30px;" alt="collection image"/>
                     </a>
-                    <span *ngIf="collection.image">{{collection.imageContentType}}, {{byteSize(collection.image)}}</span>
+                    <span *ngIf="collection.cover">{{collection.coverContentType}}, {{byteSize(collection.cover)}}</span>
                 </td>
-                <td>{{collection.booksNumber}}</td>
+                <td>{{collection.bookNumber}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
@@ -76,13 +76,5 @@
             </tr>
             </tbody>
         </table>
-    </div>
-    <div *ngIf="collections && collections.length">
-        <div class="row justify-content-center">
-            <jhi-item-count [page]="page" [total]="queryCount" [maxSize]="5" [itemsPerPage]="itemsPerPage"></jhi-item-count>
-        </div>
-        <div class="row justify-content-center">
-            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage(page)"></ngb-pagination>
-        </div>
     </div>
 </div>

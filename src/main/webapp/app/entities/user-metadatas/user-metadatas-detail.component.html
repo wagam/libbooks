@@ -1,0 +1,38 @@
+
+<div *ngIf="userMetadatas">
+    <h2><span jhiTranslate="libBooksApp.userMetadatas.detail.title">User Metadatas</span> {{userMetadatas.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="libBooksApp.userMetadatas.numberOfReadBooks">Number Of Read Books</span></dt>
+        <dd>
+            <span>{{userMetadatas.numberOfReadBooks}}</span>
+        </dd>
+        <dt><span jhiTranslate="libBooksApp.userMetadatas.numberOfComments">Number Of Comments</span></dt>
+        <dd>
+            <span>{{userMetadatas.numberOfComments}}</span>
+        </dd>
+        <dt><span jhiTranslate="libBooksApp.userMetadatas.numberOfLikes">Number Of Likes</span></dt>
+        <dd>
+            <span>{{userMetadatas.numberOfLikes}}</span>
+        </dd>
+        <dt><span jhiTranslate="libBooksApp.userMetadatas.user">User</span></dt>
+        <dd>
+            {{userMetadatas.userId}}
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'user-metadatas/'+ userMetadatas.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

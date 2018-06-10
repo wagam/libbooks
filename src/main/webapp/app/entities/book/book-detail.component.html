@@ -1,0 +1,81 @@
+
+<div *ngIf="book">
+    <h2><span jhiTranslate="libBooksApp.book.detail.title">Book</span> {{book.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="libBooksApp.book.title">Title</span></dt>
+        <dd>
+            <span>{{book.title}}</span>
+        </dd>
+        <dt><span jhiTranslate="libBooksApp.book.firstYearEdition">First Year Edition</span></dt>
+        <dd>
+            <span>{{book.firstYearEdition}}</span>
+        </dd>
+        <dt><span jhiTranslate="libBooksApp.book.hasNext">Has Next</span></dt>
+        <dd>
+            <span>{{book.hasNext}}</span>
+        </dd>
+        <dt><span jhiTranslate="libBooksApp.book.summary">Summary</span></dt>
+        <dd>
+            <span>{{book.summary}}</span>
+        </dd>
+        <dt><span jhiTranslate="libBooksApp.book.cover">Cover</span></dt>
+        <dd>
+            <div *ngIf="book.cover">
+                <a (click)="openFile(book.coverContentType, book.cover)">
+                    <img [src]="'data:' + book.coverContentType + ';base64,' + book.cover" style="max-width: 100%;" alt="book image"/>
+                </a>
+                {{book.coverContentType}}, {{byteSize(book.cover)}}
+            </div>
+        </dd>
+        <dt><span jhiTranslate="libBooksApp.book.numberOfPages">Number Of Pages</span></dt>
+        <dd>
+            <span>{{book.numberOfPages}}</span>
+        </dd>
+        <dt><span jhiTranslate="libBooksApp.book.metadatas">Metadatas</span></dt>
+        <dd>
+            <div *ngIf="book.metadatasId">
+                <a [routerLink]="['/book-metadatas', book.metadatasId]">{{book.metadatasId}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="libBooksApp.book.collection">Collection</span></dt>
+        <dd>
+            <div *ngIf="book.collectionId">
+                <a [routerLink]="['/collection', book.collectionId]">{{book.collectionId}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="libBooksApp.book.author">Author</span></dt>
+        <dd>
+            <div *ngIf="book.authorId">
+                <a [routerLink]="['/author', book.authorId]">{{book.authorId}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="libBooksApp.book.collection">Collection</span></dt>
+        <dd>
+            <div *ngIf="book.collectionId">
+                <a [routerLink]="['/collection', book.collectionId]">{{book.collectionId}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="libBooksApp.book.author">Author</span></dt>
+        <dd>
+            <div *ngIf="book.authorId">
+                <a [routerLink]="['/author', book.authorId]">{{book.authorId}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'book/'+ book.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

@@ -1,0 +1,10 @@
+{
+    "libBooksApp": {
+        "BookStatus" : {
+            "null": "",
+            "IS_READ": "IS_READ",
+            "WAIT_FOR_READ": "WAIT_FOR_READ",
+            "IS_IN_PROGRESS": "IS_IN_PROGRESS"
+        }
+    }
+}

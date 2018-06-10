@@ -37,9 +37,9 @@ describe('Collection e2e test', () => {
         collectionComponentsPage.clickOnCreateButton();
         collectionDialogPage.setNameInput('name');
         expect(collectionDialogPage.getNameInput()).toMatch('name');
-        collectionDialogPage.setImageInput(absolutePath);
-        collectionDialogPage.setBooksNumberInput('5');
-        expect(collectionDialogPage.getBooksNumberInput()).toMatch('5');
+        collectionDialogPage.setCoverInput(absolutePath);
+        collectionDialogPage.setBookNumberInput('5');
+        expect(collectionDialogPage.getBookNumberInput()).toMatch('5');
         collectionDialogPage.save();
         expect(collectionDialogPage.getSaveButton().isPresent()).toBeFalsy();
     });
@@ -67,8 +67,8 @@ export class CollectionDialogPage {
     saveButton = element(by.css('.modal-footer .btn.btn-primary'));
     closeButton = element(by.css('button.close'));
     nameInput = element(by.css('input#field_name'));
-    imageInput = element(by.css('input#file_image'));
-    booksNumberInput = element(by.css('input#field_booksNumber'));
+    coverInput = element(by.css('input#file_cover'));
+    bookNumberInput = element(by.css('input#field_bookNumber'));
 
     getModalTitle() {
         return this.modalTitle.getAttribute('jhiTranslate');
@@ -82,20 +82,20 @@ export class CollectionDialogPage {
         return this.nameInput.getAttribute('value');
     };
 
-    setImageInput = function(image) {
-        this.imageInput.sendKeys(image);
+    setCoverInput = function(cover) {
+        this.coverInput.sendKeys(cover);
     };
 
-    getImageInput = function() {
-        return this.imageInput.getAttribute('value');
+    getCoverInput = function() {
+        return this.coverInput.getAttribute('value');
     };
 
-    setBooksNumberInput = function(booksNumber) {
-        this.booksNumberInput.sendKeys(booksNumber);
+    setBookNumberInput = function(bookNumber) {
+        this.bookNumberInput.sendKeys(bookNumber);
     };
 
-    getBooksNumberInput = function() {
-        return this.booksNumberInput.getAttribute('value');
+    getBookNumberInput = function() {
+        return this.bookNumberInput.getAttribute('value');
     };
 
     save() {

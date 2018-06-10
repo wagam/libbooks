@@ -1,0 +1,27 @@
+
+{
+    "libBooksApp": {
+        "userBook" : {
+            "home": {
+                "title": "User Books",
+                "createLabel": "Create a new User Book",
+                "createOrEditLabel": "Create or edit a User Book",
+                "search": "Search for User Book"
+            },
+            "created": "A new User Book is created with identifier {{ param }}",
+            "updated": "A User Book is updated with identifier {{ param }}",
+            "deleted": "A User Book is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete User Book {{ id }}?"
+            },
+            "detail": {
+                "title": "User Book"
+            },
+            "status": "Status",
+            "comment": "Comment",
+            "isLiked": "Is Liked",
+            "user": "User",
+            "books": "Books"
+        }
+    }
+}

@@ -1,0 +1,33 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "user",
+            "otherEntityName": "user",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "userMetadatas"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "numberOfReadBooks",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "numberOfComments",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "numberOfLikes",
+            "fieldType": "Integer"
+        }
+    ],
+    "changelogDate": "20180610152158",
+    "entityTableName": "user_metadatas",
+    "dto": "mapstruct",
+    "pagination": "no",
+    "service": "no",
+    "jpaMetamodelFiltering": false
+}

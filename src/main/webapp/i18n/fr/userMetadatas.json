@@ -1,0 +1,26 @@
+
+{
+    "libBooksApp": {
+        "userMetadatas" : {
+            "home": {
+                "title": "UserMetadatas",
+                "createLabel": "Créer un nouveau User Metadatas",
+                "createOrEditLabel": "Créer ou éditer un User Metadatas",
+                "search": "Recherche pour User Metadatas"
+            },
+            "created": "Un nouveau User Metadatas a été créé avec l'identifiant {{ param }}",
+            "updated": "Le User Metadatas avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "Le User Metadatas avec l'identifiant {{ param }} a été supprimé",
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le User Metadatas {{ id }} ?"
+            },
+            "detail": {
+                "title": "User Metadatas"
+            },
+            "numberOfReadBooks": "Number Of Read Books",
+            "numberOfComments": "Number Of Comments",
+            "numberOfLikes": "Number Of Likes",
+            "user": "User"
+        }
+    }
+}

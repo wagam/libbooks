@@ -1,5 +1,6 @@
 package com.mag.libbooks.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -7,6 +8,8 @@ import javax.persistence.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -29,14 +32,19 @@ public class Collection implements Serializable {
     private String name;
 
     @Lob
-    @Column(name = "image")
-    private byte[] image;
+    @Column(name = "cover")
+    private byte[] cover;
 
-    @Column(name = "image_content_type")
-    private String imageContentType;
+    @Column(name = "cover_content_type")
+    private String coverContentType;
 
-    @Column(name = "books_number")
-    private Integer booksNumber;
+    @Column(name = "book_number")
+    private Integer bookNumber;
+
+    @OneToMany(mappedBy = "collection")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Book> books = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -60,43 +68,68 @@ public class Collection implements Serializable {
         this.name = name;
     }
 
-    public byte[] getImage() {
-        return image;
+    public byte[] getCover() {
+        return cover;
     }
 
-    public Collection image(byte[] image) {
-        this.image = image;
+    public Collection cover(byte[] cover) {
+        this.cover = cover;
         return this;
     }
 
-    public void setImage(byte[] image) {
-        this.image = image;
+    public void setCover(byte[] cover) {
+        this.cover = cover;
     }
 
-    public String getImageContentType() {
-        return imageContentType;
+    public String getCoverContentType() {
+        return coverContentType;
     }
 
-    public Collection imageContentType(String imageContentType) {
-        this.imageContentType = imageContentType;
+    public Collection coverContentType(String coverContentType) {
+        this.coverContentType = coverContentType;
         return this;
     }
 
-    public void setImageContentType(String imageContentType) {
-        this.imageContentType = imageContentType;
+    public void setCoverContentType(String coverContentType) {
+        this.coverContentType = coverContentType;
     }
 
-    public Integer getBooksNumber() {
-        return booksNumber;
+    public Integer getBookNumber() {
+        return bookNumber;
     }
 
-    public Collection booksNumber(Integer booksNumber) {
-        this.booksNumber = booksNumber;
+    public Collection bookNumber(Integer bookNumber) {
+        this.bookNumber = bookNumber;
         return this;
     }
 
-    public void setBooksNumber(Integer booksNumber) {
-        this.booksNumber = booksNumber;
+    public void setBookNumber(Integer bookNumber) {
+        this.bookNumber = bookNumber;
+    }
+
+    public Set<Book> getBooks() {
+        return books;
+    }
+
+    public Collection books(Set<Book> books) {
+        this.books = books;
+        return this;
+    }
+
+    public Collection addBook(Book book) {
+        this.books.add(book);
+        book.setCollection(this);
+        return this;
+    }
+
+    public Collection removeBook(Book book) {
+        this.books.remove(book);
+        book.setCollection(null);
+        return this;
+    }
+
+    public void setBooks(Set<Book> books) {
+        this.books = books;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
@@ -125,9 +158,9 @@ public class Collection implements Serializable {
         return "Collection{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
-            ", image='" + getImage() + "'" +
-            ", imageContentType='" + getImageContentType() + "'" +
-            ", booksNumber=" + getBooksNumber() +
+            ", cover='" + getCover() + "'" +
+            ", coverContentType='" + getCoverContentType() + "'" +
+            ", bookNumber=" + getBookNumber() +
             "}";
     }
 }

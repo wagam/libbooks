@@ -1,0 +1,25 @@
+
+{
+    "libBooksApp": {
+        "bookMetadatas" : {
+            "home": {
+                "title": "BookMetadatas",
+                "createLabel": "Créer un nouveau Book Metadatas",
+                "createOrEditLabel": "Créer ou éditer un Book Metadatas",
+                "search": "Recherche pour Book Metadatas"
+            },
+            "created": "Un nouveau Book Metadatas a été créé avec l'identifiant {{ param }}",
+            "updated": "Le Book Metadatas avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "Le Book Metadatas avec l'identifiant {{ param }} a été supprimé",
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le Book Metadatas {{ id }} ?"
+            },
+            "detail": {
+                "title": "Book Metadatas"
+            },
+            "numberOfComments": "Number Of Comments",
+            "numberOfLikes": "Number Of Likes",
+            "notation": "Notation"
+        }
+    }
+}

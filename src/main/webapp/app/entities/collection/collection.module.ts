@@ -13,7 +13,6 @@ import {
     CollectionDeleteDialogComponent,
     collectionRoute,
     collectionPopupRoute,
-    CollectionResolvePagingParams,
 } from './';
 
 const ENTITY_STATES = [
@@ -44,7 +43,6 @@ const ENTITY_STATES = [
     providers: [
         CollectionService,
         CollectionPopupService,
-        CollectionResolvePagingParams,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

@@ -18,26 +18,26 @@
                 [(ngModel)]="collection.name" />
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="libBooksApp.collection.image" for="field_image">Image</label>
+            <label class="form-control-label" jhiTranslate="libBooksApp.collection.cover" for="field_cover">Cover</label>
             <div>
-                <img [src]="'data:' + collection.imageContentType + ';base64,' + collection.image" style="max-height: 100px;" *ngIf="collection.image" alt="collection image"/>
-                <div *ngIf="collection.image" class="form-text text-danger clearfix">
-                    <span class="pull-left">{{collection.imageContentType}}, {{byteSize(collection.image)}}</span>
-                    <button type="button" (click)="clearInputImage('image', 'imageContentType', 'fileImage')" class="btn btn-secondary btn-xs pull-right">
+                <img [src]="'data:' + collection.coverContentType + ';base64,' + collection.cover" style="max-height: 100px;" *ngIf="collection.cover" alt="collection image"/>
+                <div *ngIf="collection.cover" class="form-text text-danger clearfix">
+                    <span class="pull-left">{{collection.coverContentType}}, {{byteSize(collection.cover)}}</span>
+                    <button type="button" (click)="clearInputImage('cover', 'coverContentType', 'fileImage')" class="btn btn-secondary btn-xs pull-right">
                         <span class="fa fa-times"></span>
                     </button>
                 </div>
-                <input type="file" id="file_image" (change)="setFileData($event, collection, 'image', true)" accept="image/*" jhiTranslate="entity.action.addimage"/>
+                <input type="file" id="file_cover" (change)="setFileData($event, collection, 'cover', true)" accept="image/*" jhiTranslate="entity.action.addimage"/>
             </div>
-            <input type="hidden" class="form-control" name="image" id="field_image"
-                [(ngModel)]="collection.image" />
-            <input type="hidden" class="form-control" name="imageContentType" id="field_imageContentType"
-                [(ngModel)]="collection.imageContentType" />
+            <input type="hidden" class="form-control" name="cover" id="field_cover"
+                [(ngModel)]="collection.cover" />
+            <input type="hidden" class="form-control" name="coverContentType" id="field_coverContentType"
+                [(ngModel)]="collection.coverContentType" />
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="libBooksApp.collection.booksNumber" for="field_booksNumber">Books Number</label>
-            <input type="number" class="form-control" name="booksNumber" id="field_booksNumber"
-                [(ngModel)]="collection.booksNumber" />
+            <label class="form-control-label" jhiTranslate="libBooksApp.collection.bookNumber" for="field_bookNumber">Book Number</label>
+            <input type="number" class="form-control" name="bookNumber" id="field_bookNumber"
+                [(ngModel)]="collection.bookNumber" />
         </div>
 
     </div>

@@ -1,0 +1,25 @@
+
+{
+    "libBooksApp": {
+        "bookMetadatas" : {
+            "home": {
+                "title": "Book Metadatas",
+                "createLabel": "Create a new Book Metadatas",
+                "createOrEditLabel": "Create or edit a Book Metadatas",
+                "search": "Search for Book Metadatas"
+            },
+            "created": "A new Book Metadatas is created with identifier {{ param }}",
+            "updated": "A Book Metadatas is updated with identifier {{ param }}",
+            "deleted": "A Book Metadatas is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Book Metadatas {{ id }}?"
+            },
+            "detail": {
+                "title": "Book Metadatas"
+            },
+            "numberOfComments": "Number Of Comments",
+            "numberOfLikes": "Number Of Likes",
+            "notation": "Notation"
+        }
+    }
+}

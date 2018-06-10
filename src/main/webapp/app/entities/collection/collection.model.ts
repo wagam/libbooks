@@ -4,9 +4,10 @@ export class Collection implements BaseEntity {
     constructor(
         public id?: number,
         public name?: string,
-        public imageContentType?: string,
-        public image?: any,
-        public booksNumber?: number,
+        public coverContentType?: string,
+        public cover?: any,
+        public bookNumber?: number,
+        public books?: BaseEntity[],
     ) {
     }
 }

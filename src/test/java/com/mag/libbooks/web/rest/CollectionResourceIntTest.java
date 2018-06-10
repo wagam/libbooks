@@ -4,7 +4,6 @@ import com.mag.libbooks.LibBooksApp;
 
 import com.mag.libbooks.domain.Collection;
 import com.mag.libbooks.repository.CollectionRepository;
-import com.mag.libbooks.service.CollectionService;
 import com.mag.libbooks.repository.search.CollectionSearchRepository;
 import com.mag.libbooks.service.dto.CollectionDTO;
 import com.mag.libbooks.service.mapper.CollectionMapper;
@@ -46,22 +45,19 @@ public class CollectionResourceIntTest {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
-    private static final byte[] DEFAULT_IMAGE = TestUtil.createByteArray(1, "0");
-    private static final byte[] UPDATED_IMAGE = TestUtil.createByteArray(2, "1");
-    private static final String DEFAULT_IMAGE_CONTENT_TYPE = "image/jpg";
-    private static final String UPDATED_IMAGE_CONTENT_TYPE = "image/png";
+    private static final byte[] DEFAULT_COVER = TestUtil.createByteArray(1, "0");
+    private static final byte[] UPDATED_COVER = TestUtil.createByteArray(2, "1");
+    private static final String DEFAULT_COVER_CONTENT_TYPE = "image/jpg";
+    private static final String UPDATED_COVER_CONTENT_TYPE = "image/png";
 
-    private static final Integer DEFAULT_BOOKS_NUMBER = 1;
-    private static final Integer UPDATED_BOOKS_NUMBER = 2;
+    private static final Integer DEFAULT_BOOK_NUMBER = 1;
+    private static final Integer UPDATED_BOOK_NUMBER = 2;
 
     @Autowired
     private CollectionRepository collectionRepository;
 
     @Autowired
     private CollectionMapper collectionMapper;
-
-    @Autowired
-    private CollectionService collectionService;
 
     @Autowired
     private CollectionSearchRepository collectionSearchRepository;
@@ -85,7 +81,7 @@ public class CollectionResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final CollectionResource collectionResource = new CollectionResource(collectionService);
+        final CollectionResource collectionResource = new CollectionResource(collectionRepository, collectionMapper, collectionSearchRepository);
         this.restCollectionMockMvc = MockMvcBuilders.standaloneSetup(collectionResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -102,9 +98,9 @@ public class CollectionResourceIntTest {
     public static Collection createEntity(EntityManager em) {
         Collection collection = new Collection()
             .name(DEFAULT_NAME)
-            .image(DEFAULT_IMAGE)
-            .imageContentType(DEFAULT_IMAGE_CONTENT_TYPE)
-            .booksNumber(DEFAULT_BOOKS_NUMBER);
+            .cover(DEFAULT_COVER)
+            .coverContentType(DEFAULT_COVER_CONTENT_TYPE)
+            .bookNumber(DEFAULT_BOOK_NUMBER);
         return collection;
     }
 
@@ -131,9 +127,9 @@ public class CollectionResourceIntTest {
         assertThat(collectionList).hasSize(databaseSizeBeforeCreate + 1);
         Collection testCollection = collectionList.get(collectionList.size() - 1);
         assertThat(testCollection.getName()).isEqualTo(DEFAULT_NAME);
-        assertThat(testCollection.getImage()).isEqualTo(DEFAULT_IMAGE);
-        assertThat(testCollection.getImageContentType()).isEqualTo(DEFAULT_IMAGE_CONTENT_TYPE);
-        assertThat(testCollection.getBooksNumber()).isEqualTo(DEFAULT_BOOKS_NUMBER);
+        assertThat(testCollection.getCover()).isEqualTo(DEFAULT_COVER);
+        assertThat(testCollection.getCoverContentType()).isEqualTo(DEFAULT_COVER_CONTENT_TYPE);
+        assertThat(testCollection.getBookNumber()).isEqualTo(DEFAULT_BOOK_NUMBER);
 
         // Validate the Collection in Elasticsearch
         Collection collectionEs = collectionSearchRepository.findOne(testCollection.getId());
@@ -172,9 +168,9 @@ public class CollectionResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(collection.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].imageContentType").value(hasItem(DEFAULT_IMAGE_CONTENT_TYPE)))
-            .andExpect(jsonPath("$.[*].image").value(hasItem(Base64Utils.encodeToString(DEFAULT_IMAGE))))
-            .andExpect(jsonPath("$.[*].booksNumber").value(hasItem(DEFAULT_BOOKS_NUMBER)));
+            .andExpect(jsonPath("$.[*].coverContentType").value(hasItem(DEFAULT_COVER_CONTENT_TYPE)))
+            .andExpect(jsonPath("$.[*].cover").value(hasItem(Base64Utils.encodeToString(DEFAULT_COVER))))
+            .andExpect(jsonPath("$.[*].bookNumber").value(hasItem(DEFAULT_BOOK_NUMBER)));
     }
 
     @Test
@@ -189,9 +185,9 @@ public class CollectionResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(collection.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
-            .andExpect(jsonPath("$.imageContentType").value(DEFAULT_IMAGE_CONTENT_TYPE))
-            .andExpect(jsonPath("$.image").value(Base64Utils.encodeToString(DEFAULT_IMAGE)))
-            .andExpect(jsonPath("$.booksNumber").value(DEFAULT_BOOKS_NUMBER));
+            .andExpect(jsonPath("$.coverContentType").value(DEFAULT_COVER_CONTENT_TYPE))
+            .andExpect(jsonPath("$.cover").value(Base64Utils.encodeToString(DEFAULT_COVER)))
+            .andExpect(jsonPath("$.bookNumber").value(DEFAULT_BOOK_NUMBER));
     }
 
     @Test
@@ -216,9 +212,9 @@ public class CollectionResourceIntTest {
         em.detach(updatedCollection);
         updatedCollection
             .name(UPDATED_NAME)
-            .image(UPDATED_IMAGE)
-            .imageContentType(UPDATED_IMAGE_CONTENT_TYPE)
-            .booksNumber(UPDATED_BOOKS_NUMBER);
+            .cover(UPDATED_COVER)
+            .coverContentType(UPDATED_COVER_CONTENT_TYPE)
+            .bookNumber(UPDATED_BOOK_NUMBER);
         CollectionDTO collectionDTO = collectionMapper.toDto(updatedCollection);
 
         restCollectionMockMvc.perform(put("/api/collections")
@@ -231,9 +227,9 @@ public class CollectionResourceIntTest {
         assertThat(collectionList).hasSize(databaseSizeBeforeUpdate);
         Collection testCollection = collectionList.get(collectionList.size() - 1);
         assertThat(testCollection.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testCollection.getImage()).isEqualTo(UPDATED_IMAGE);
-        assertThat(testCollection.getImageContentType()).isEqualTo(UPDATED_IMAGE_CONTENT_TYPE);
-        assertThat(testCollection.getBooksNumber()).isEqualTo(UPDATED_BOOKS_NUMBER);
+        assertThat(testCollection.getCover()).isEqualTo(UPDATED_COVER);
+        assertThat(testCollection.getCoverContentType()).isEqualTo(UPDATED_COVER_CONTENT_TYPE);
+        assertThat(testCollection.getBookNumber()).isEqualTo(UPDATED_BOOK_NUMBER);
 
         // Validate the Collection in Elasticsearch
         Collection collectionEs = collectionSearchRepository.findOne(testCollection.getId());
@@ -294,9 +290,9 @@ public class CollectionResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(collection.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].imageContentType").value(hasItem(DEFAULT_IMAGE_CONTENT_TYPE)))
-            .andExpect(jsonPath("$.[*].image").value(hasItem(Base64Utils.encodeToString(DEFAULT_IMAGE))))
-            .andExpect(jsonPath("$.[*].booksNumber").value(hasItem(DEFAULT_BOOKS_NUMBER)));
+            .andExpect(jsonPath("$.[*].coverContentType").value(hasItem(DEFAULT_COVER_CONTENT_TYPE)))
+            .andExpect(jsonPath("$.[*].cover").value(hasItem(Base64Utils.encodeToString(DEFAULT_COVER))))
+            .andExpect(jsonPath("$.[*].bookNumber").value(hasItem(DEFAULT_BOOK_NUMBER)));
     }
 
     @Test

@@ -1,18 +1,17 @@
 package com.mag.libbooks.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import com.mag.libbooks.service.CollectionService;
+import com.mag.libbooks.domain.Collection;
+
+import com.mag.libbooks.repository.CollectionRepository;
+import com.mag.libbooks.repository.search.CollectionSearchRepository;
 import com.mag.libbooks.web.rest.errors.BadRequestAlertException;
 import com.mag.libbooks.web.rest.util.HeaderUtil;
-import com.mag.libbooks.web.rest.util.PaginationUtil;
 import com.mag.libbooks.service.dto.CollectionDTO;
+import com.mag.libbooks.service.mapper.CollectionMapper;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +20,7 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
@@ -36,10 +36,16 @@ public class CollectionResource {
 
     private static final String ENTITY_NAME = "collection";
 
-    private final CollectionService collectionService;
+    private final CollectionRepository collectionRepository;
 
-    public CollectionResource(CollectionService collectionService) {
-        this.collectionService = collectionService;
+    private final CollectionMapper collectionMapper;
+
+    private final CollectionSearchRepository collectionSearchRepository;
+
+    public CollectionResource(CollectionRepository collectionRepository, CollectionMapper collectionMapper, CollectionSearchRepository collectionSearchRepository) {
+        this.collectionRepository = collectionRepository;
+        this.collectionMapper = collectionMapper;
+        this.collectionSearchRepository = collectionSearchRepository;
     }
 
     /**
@@ -56,7 +62,10 @@ public class CollectionResource {
         if (collectionDTO.getId() != null) {
             throw new BadRequestAlertException("A new collection cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        CollectionDTO result = collectionService.save(collectionDTO);
+        Collection collection = collectionMapper.toEntity(collectionDTO);
+        collection = collectionRepository.save(collection);
+        CollectionDTO result = collectionMapper.toDto(collection);
+        collectionSearchRepository.save(collection);
         return ResponseEntity.created(new URI("/api/collections/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -78,7 +87,10 @@ public class CollectionResource {
         if (collectionDTO.getId() == null) {
             return createCollection(collectionDTO);
         }
-        CollectionDTO result = collectionService.save(collectionDTO);
+        Collection collection = collectionMapper.toEntity(collectionDTO);
+        collection = collectionRepository.save(collection);
+        CollectionDTO result = collectionMapper.toDto(collection);
+        collectionSearchRepository.save(collection);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, collectionDTO.getId().toString()))
             .body(result);
@@ -87,17 +99,15 @@ public class CollectionResource {
     /**
      * GET  /collections : get all the collections.
      *
-     * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of collections in body
      */
     @GetMapping("/collections")
     @Timed
-    public ResponseEntity<List<CollectionDTO>> getAllCollections(Pageable pageable) {
-        log.debug("REST request to get a page of Collections");
-        Page<CollectionDTO> page = collectionService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/collections");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-    }
+    public List<CollectionDTO> getAllCollections() {
+        log.debug("REST request to get all Collections");
+        List<Collection> collections = collectionRepository.findAll();
+        return collectionMapper.toDto(collections);
+        }
 
     /**
      * GET  /collections/:id : get the "id" collection.
@@ -109,7 +119,8 @@ public class CollectionResource {
     @Timed
     public ResponseEntity<CollectionDTO> getCollection(@PathVariable Long id) {
         log.debug("REST request to get Collection : {}", id);
-        CollectionDTO collectionDTO = collectionService.findOne(id);
+        Collection collection = collectionRepository.findOne(id);
+        CollectionDTO collectionDTO = collectionMapper.toDto(collection);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(collectionDTO));
     }
 
@@ -123,7 +134,8 @@ public class CollectionResource {
     @Timed
     public ResponseEntity<Void> deleteCollection(@PathVariable Long id) {
         log.debug("REST request to delete Collection : {}", id);
-        collectionService.delete(id);
+        collectionRepository.delete(id);
+        collectionSearchRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
@@ -132,16 +144,16 @@ public class CollectionResource {
      * to the query.
      *
      * @param query the query of the collection search
-     * @param pageable the pagination information
      * @return the result of the search
      */
     @GetMapping("/_search/collections")
     @Timed
-    public ResponseEntity<List<CollectionDTO>> searchCollections(@RequestParam String query, Pageable pageable) {
-        log.debug("REST request to search for a page of Collections for query {}", query);
-        Page<CollectionDTO> page = collectionService.search(query, pageable);
-        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/collections");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    public List<CollectionDTO> searchCollections(@RequestParam String query) {
+        log.debug("REST request to search Collections for query {}", query);
+        return StreamSupport
+            .stream(collectionSearchRepository.search(queryStringQuery(query)).spliterator(), false)
+            .map(collectionMapper::toDto)
+            .collect(Collectors.toList());
     }
 
 }
